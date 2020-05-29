@@ -22,11 +22,11 @@ from csutils.segmentation_summary import summary
 parser = argparse.ArgumentParser(
     description="Script to evaluate a neural network model on the ACDC challenge data"
 )
-parser.add_argument("MODEL_NAME", type=str, help="Name of experiment to use")
+parser.add_argument('-m', "--model_name", type=str, default='unet2D_bn_modified_ds_mnms_rot', help="Name of experiment to use")
 parser.add_argument('-t', '--evaluate_test_set', action='store_true')
 parser.add_argument('-a', '--evaluate_all', action='store_true')
 parser.add_argument('-i', '--iter', type=int, help='which iteration to use')
-parser.add_argument('-d', '--dataset', type=str, help='Select which dataset to evaluate.')
+parser.add_argument('-d', '--dataset', type=str, default='mnms', help='Select which dataset to evaluate.')
 
 
 if __name__ == "__main__":
@@ -55,7 +55,7 @@ if __name__ == "__main__":
 
 
     base_path = sys_config.project_root
-    model_path = os.path.join(sys_config.log_root, args.MODEL_NAME)
+    model_path = os.path.join(sys_config.log_root, args.model_name)
     config_file = glob.glob(model_path + '/*py')[0]
     config_module = config_file.split('/')[-1].rstrip('.py')
     exp_config = SourceFileLoader(config_module, os.path.join(config_file)).load_module()
@@ -103,7 +103,7 @@ if __name__ == "__main__":
             metrics_acdc.main(path_gt, path_pred)
             metrics_acdc.plot_results(path_pred)
 
-        summary(args.MODEL_NAME)
+        summary(args.model_name)
 
     else:
 
@@ -132,4 +132,4 @@ if __name__ == "__main__":
         metrics_acdc.main(path_gt, path_pred)
         metrics_acdc.plot_results(path_pred)
 
-        summary(args.MODEL_NAME)
+        summary(args.model_name)
