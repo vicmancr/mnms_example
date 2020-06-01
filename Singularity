@@ -4,7 +4,7 @@ From: tensorflow/tensorflow:1.12.3-gpu-py3
 %files
     # Copy important files here (code and model files)
     requirements.txt requirements.txt
-    segmentation_model mnms/
+    segmentation_model/ mnms/
 
 %post
     apt-get -y update
