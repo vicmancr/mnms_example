@@ -38,8 +38,8 @@ def crop_or_pad_volume_to_size(vol, nx, ny):
     return vol_cropped
 
 
-def score_data(model, output_folder, model_path, dataset, subset, exp_config, 
-               do_postprocessing=False, evaluate_all=False, use_iter=None):
+def score_data(model, output_folder, input_datapath, model_path, dataset, exp_config, 
+               do_postprocessing=False):
 
     batch_size = 1
     num_channels = exp_config.nlabels
@@ -58,10 +58,7 @@ def score_data(model, output_folder, model_path, dataset, subset, exp_config,
     with tf.Session() as sess:
 
         sess.run(init)
-        if not use_iter:
-            checkpoint_path = utils_gen.get_latest_model_checkpoint_path(model_path, 'model_best_dice.ckpt')
-        else:
-            checkpoint_path = os.path.join(model_path, 'model_best_dice.ckpt-%d' % use_iter)
+        checkpoint_path = utils_gen.get_latest_model_checkpoint_path(model_path, 'model_best_dice.ckpt')
 
         saver.restore(sess, checkpoint_path)
 
@@ -73,7 +70,7 @@ def score_data(model, output_folder, model_path, dataset, subset, exp_config,
         # Select image pixel size
         nx, ny = exp_config.image_size[:2]
 
-        data = Dataset(dataset, subset, exp_config.data_mode, (nx, ny), exp_config.target_resolution)
+        data = Dataset(dataset, '', exp_config.data_mode, input_datapath, (nx, ny), exp_config.target_resolution)
         gt_exists = False
 
         # Iterate over volumes and slices of dataset

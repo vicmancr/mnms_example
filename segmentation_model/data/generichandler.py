@@ -10,10 +10,14 @@ class GenericHandler(object):
     '''
     Class for handling nifti datasets.
     '''
-    def __init__(self, mode='training'):
+    def __init__(self, mode='', datapath=''):
         '''Constructor.'''
         self.dataset   = self.__class__.__name__.lower() # Name of class in lowercase format.
-        self.base_path = os.path.join(wd, self.dataset, mode)
+        if len(datapath):
+            wd = datapath
+        self.base_path = os.path.join(wd, self.dataset)
+        if len(mode):
+            self.base_path = os.path.join(self.base_path, mode)
 
     def get_files(self):
         '''Obtain all file paths for each of the corresponding sets (training and testing).'''

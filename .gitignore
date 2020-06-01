@@ -1,6 +1,8 @@
 # Particular folders
 segmentation_model/data/*/
 segmentation_model/models/*
+output*
+sample_data
 
 # Singularity images
 *.sif

@@ -155,7 +155,7 @@ class Dataset(object):
     '''
     Class for handling data files for a given dataset.
     '''
-    def __init__(self, dataset_name, subset='training', mode='2D', image_size=None, image_resolution=None):
+    def __init__(self, dataset_name, subset='', mode='2D', datapath='', image_size=None, image_resolution=None):
         '''
         Constructor. It defines the configuration for the dataset handler.
         Parameters:
@@ -169,20 +169,11 @@ class Dataset(object):
         self.mode = mode
         self.image_size = image_size
         self.image_resolution = image_resolution
-        if isinstance(dataset_name, str):
-            module = importlib.import_module('data.{0}'.format(dataset_name))
-            handler = getattr(module, dataset_name[0].upper() + dataset_name[1:])
-            generator = handler(subset)
-            # File dictionaries containing data images.
-            self.files = generator.get_files()
-        else:
-            self.files = []
-            for db in dataset_name:
-                module = importlib.import_module('data.{0}'.format(db))
-                handler = getattr(module, db[0].upper() + db[1:])
-                generator = handler(subset)
-                # File dictionaries containing data images.
-                self.files += generator.get_files()
+        module = importlib.import_module('data.{0}'.format(dataset_name))
+        handler = getattr(module, dataset_name[0].upper() + dataset_name[1:])
+        generator = handler(subset, datapath)
+        # File dictionaries containing data images.
+        self.files = generator.get_files()
         self.volumes = []
         self.volumes_index = {}
         self.process_volumes()

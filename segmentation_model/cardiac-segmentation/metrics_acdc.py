@@ -476,16 +476,11 @@ def main(path_gt, path_pred):
         raise ValueError("The paths given needs to be two directories or two files.")
 
 
-def plot_results(path_pred):
+def plot_results(path_pred, model_name):
     """
     Plot results per slice, cardiac phase and label.
     """
-    val_detail = ''
-    if 'predictions_testset' not in path_pred:
-        val_detail = '_validation'
-    else:
-        return 0
-    res_detail = sorted(list(glob.iglob(os.path.join(path_pred, 'results{}_detailed_????????_??????.csv'.format(val_detail)))))[-1]
+    res_detail = sorted(list(glob.iglob(os.path.join(path_pred, 'results_detailed_????????_??????.csv'))))[-1]
     detail = pd.read_csv(res_detail)
     phases = list(set([d[2] for d in detail.Name.str.split('_')]))
     detail['Phase'] = [d[2] for d in detail.Name.str.split('_')]
@@ -516,7 +511,7 @@ def plot_results(path_pred):
     paltt = ['m','g','y']
     cases = ['LV', 'RV', 'MYO']
     f, axes = plt.subplots(nrows=len(cases), ncols=len(phases), squeeze=False)
-    f.suptitle('Model {}'.format(sp[3]))
+    f.suptitle('Model {}'.format(model_name))
     for j, ph in enumerate(phases):
         axes[0,j].set_title(ph)
         for i, case in enumerate(cases):
@@ -531,7 +526,7 @@ def plot_results(path_pred):
 
     # Lineplot of accuracy per slice relative to mid slice
     f2, axes = plt.subplots(nrows=len(cases), ncols=len(phases), squeeze=False)
-    f2.suptitle('Model {}'.format(sp[3]))
+    f2.suptitle('Model {}'.format(model_name))
     for j, ph in enumerate(phases):
         axes[0,j].set_title(ph)
         for i, case in enumerate(cases):
@@ -541,7 +536,7 @@ def plot_results(path_pred):
 
     f2.savefig(os.path.join(path_pred, 'lineplots.pdf'))
 
-    detail.to_csv(os.path.join(path_pred, 'results{}_detailed_transformed.csv'.format(val_detail)))
+    detail.to_csv(os.path.join(path_pred, 'results_detailed_transformed.csv'))
 
     # Clean seaborn plot styles
     sns.set_style("white")
