@@ -15,7 +15,7 @@ From: tensorflow/tensorflow:1.12.3-gpu-py3
     echo "tensorflow container"
     echo
 
-    python /mnms/segmentation_model/eval.py "$@"
+    python /mnms/eval.py "$@"
 
 %labels
     Maintainer "Victor M. Campello"
