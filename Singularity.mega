@@ -1,0 +1,19 @@
+Bootstrap: docker
+From: ubuntu:18.04
+
+%files
+    # Copy important files here (code and model files)
+    megacmd-xUbuntu_18.04_amd64.deb mega.deb
+
+%post
+    apt-get -y update
+    apt-get -y install libc-ares2 libcrypto++6 libmediainfo0v5 libpcrecpp0v5 libssl1.1 libzen0v5
+    dpkg -i mega.deb
+
+%runscript
+    echo "megacmd container"
+    echo
+
+
+%labels
+    Maintainer "Victor M. Campello"
