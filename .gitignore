@@ -1,3 +1,11 @@
+# Particular folders
+segmentation_model/data/*/
+segmentation_model/models/*
+output*
+
+# Singularity images
+*.sif
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
