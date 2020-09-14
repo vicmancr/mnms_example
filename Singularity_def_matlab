@@ -1,0 +1,29 @@
+Bootstrap: docker
+From: nvcr.io/partners/matlab:r2020a
+# From: atanasi/matlab:v97
+
+%setup
+    mkdir -p ${SINGULARITY_ROOTFS}/matlab_scripts
+    mkdir -p ${SINGULARITY_ROOTFS}/matlab_scripts/functions
+    mkdir -p /home/matlab/.matlab/R2020a_licenses
+
+%files
+    # preprocessing_NN2nd.m /matlab_scripts/preprocessing_NN2nd.m
+    # preprocessing_NN1st.m /matlab_scripts/preprocessing_NN1st.m
+    # postprocessing_NN2nd.m /matlab_scripts/postprocessing_NN2nd.m
+    # loadMMdata.m /matlab_scripts/loadMMdata.m
+    # functions/* /matlab_scripts/functions/
+    # runscript.sh /matlab_scripts/runscript.sh
+    license.lic /home/matlab/.matlab/R2020a_licenses/
+
+%environment
+    # export PATH="$PATH:/usr/local/MATLAB/MATLAB_Runtime/v97/runtime/glnxa64:/usr/local/MATLAB/MATLAB_Runtime/v97/bin/glnxa64:/usr/local/MATLAB/MATLAB_Runtime/v97/sys/os/glnxa64:/usr/local/MATLAB/MATLAB_Runtime/v97/extern/bin/glnxa64"
+
+%runscript
+    echo "Starting preprocessing..."
+    
+
+%labels
+    Maintainer "Donkey team"
+
+
