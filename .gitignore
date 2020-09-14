@@ -3,6 +3,13 @@ segmentation_model/data/*/
 segmentation_model/models/*
 output*
 sample_data
+*validation/*
+*validation2/*
+training/
+results/
+gt_test/
+test/
+val_results/
 
 # Singularity images
 *.sif
