@@ -16,4 +16,4 @@ module load fftw/3.3.7 szip/2.1.1 opencv/3.4.1
 module load python/3.6.5_ML
 
 cd /home/bsc39/bsc39304/mnms/
-singularity exec --nv images/pollito.sif python segmentation_model/train.py unet2D_bn_modified_ds -d mnms -b 8 -n _ds
+python segmentation_model/train.py unet2D_bn_modified_ds -d mnms -b 8 -n _ds
