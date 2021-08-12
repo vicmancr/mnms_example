@@ -1,3 +1,38 @@
+"""
+author: Clément Zotti (clement.zotti@usherbrooke.ca)
+date: April 2017
+
+DESCRIPTION :
+The script provide helpers functions to handle nifti image format:
+    - load_nii()
+    - save_nii()
+
+to generate metrics for two images:
+    - metrics()
+
+And it is callable from the command line (see below).
+Each function provided in this script has comments to understand
+how they works.
+
+HOW-TO:
+
+This script was tested for python 3.4.
+
+First, you need to install the required packages with
+    pip install -r requirements.txt
+
+After the installation, you have two ways of running this script:
+    1) python metrics_mnms.py ground_truth/patient001_ED.nii.gz prediction/patient001_ED.nii.gz
+    2) python metrics_mnms.py ground_truth/ prediction/
+
+The first option will print in the console the dice and volume of each class for the given image.
+The second option wiil ouput a csv file where each images will have the dice and volume of each class.
+
+
+Link: http://acdc.creatis.insa-lyon.fr
+
+"""
+
 import os
 import re
 import glob
@@ -267,6 +302,7 @@ def metrics_slice(img_gt, img_pred, voxel_size):
     for zz in range(img_gt.shape[2]):
         res_z = []
         # Loop on each classes of the input images
+        # for c in [3, 1, 2]:
         for c in [1, 2, 3]:
             # Copy the gt image to not alterate the input
             gt_c_i = np.copy(img_gt[..., zz])
@@ -308,7 +344,25 @@ def metrics_slice(img_gt, img_pred, voxel_size):
             else:
                 surfdist = 0 # Correct (no annotation)
 
+            # Compute volume
+            # volpred = pred_c_i.sum() * np.prod(voxel_size) / 1000.
+            # volgt = gt_c_i.sum() * np.prod(voxel_size) / 1000.
+
+            # res += [dice, xent, volpred, volpred-volgt]
             res_z += [dice, jaccard, hausd, surfdist]
+
+            # # Modified dice accuracy
+            # xent = mod_dc(gt_c_i, pred_c_i)
+
+            # # Compute the Dice
+            # dice = dc(gt_c_i, pred_c_i)
+
+            # # Compute volume
+            # # volpred = pred_c_i.sum() * np.prod(voxel_size) / 1000.
+            # # volgt = gt_c_i.sum() * np.prod(voxel_size) / 1000.
+
+            # # res_z += [dice, xent, volpred, volpred - volgt]
+            # res_z += [dice, xent]
 
         res_zs += [res_z]
 
@@ -365,7 +419,12 @@ def compute_metrics_on_directories(dir_gt, dir_pred):
         pred_names = [os.path.basename(lp) for lp in lst_pred]
         lst_gt = list(filter(lambda x: re.sub(r'\_gt', '', os.path.basename(x)) in pred_names, lst_gt))
 
+    # cnt = 0
     for p_gt, p_pred in zip(lst_gt, lst_pred):
+        # if cnt > 2:
+        #     break
+        # cnt += 1
+
         print('> Evaluate image:', p_pred)
         print('  Against gt:', p_gt)
 
@@ -380,6 +439,7 @@ def compute_metrics_on_directories(dir_gt, dir_pred):
         if gt.shape != pred.shape:
             pred = np.swapaxes(pred, 0, 1)
 
+        # res_n = metrics(gt, pred, zooms)
         res_n, res_zsn = metrics_slice(gt, pred, zooms)
         code, _, edes = os.path.basename(p_gt).split('_')[:3]
         vendor, centre = info[info['External code'] == code][['Vendor', 'Centre']].values[0]

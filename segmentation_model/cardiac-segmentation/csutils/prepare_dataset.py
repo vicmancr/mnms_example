@@ -85,7 +85,7 @@ class DataManager(object):
 
         for volume in self.dataset:
             if self.split_test_train:
-                if int(volume.patient_id[-1]) == 0:
+                if int(volume.patient_id) > 68:
                     train_test = 'test'
                 else:
                     train_test = 'train'
@@ -194,7 +194,7 @@ def prepare_data(dataset, output_file, subset, mode, model_type, size, target_re
 
     logging.info('Counting files and parsing meta data...')
 
-    data = Dataset(dataset, subset, mode, size, target_resolution)
+    data = Dataset(dataset, subset, mode, '', size, target_resolution)
     data_manager = DataManager(output_file, data, size, model_type, split_test_train)
 
     img_mask_processing = {

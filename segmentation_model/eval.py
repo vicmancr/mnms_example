@@ -64,5 +64,5 @@ if __name__ == "__main__":
                                 exp_config=exp_config,
                                 do_postprocessing=True)
 
-    metrics_acdc.main(path_gt, path_pred)
-    metrics_acdc.plot_results(path_pred, args.model_name)
+    # metrics_acdc.main(path_gt, path_pred)
+    # metrics_acdc.plot_results(path_pred, args.model_name)

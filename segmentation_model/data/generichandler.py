@@ -3,8 +3,6 @@ import os
 import glob
 from data.nifti import Nifti
 
-wd = os.path.dirname(os.path.realpath(__file__))
-
 
 class GenericHandler(object):
     '''
@@ -13,6 +11,7 @@ class GenericHandler(object):
     def __init__(self, mode='', datapath=''):
         '''Constructor.'''
         self.dataset   = self.__class__.__name__.lower() # Name of class in lowercase format.
+        wd = os.path.dirname(os.path.realpath(__file__))
         if len(datapath):
             wd = datapath
         self.base_path = os.path.join(wd, self.dataset)
